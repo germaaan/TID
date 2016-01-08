@@ -1,4 +1,4 @@
-titanic=read.csv(file="/home/germaaan/proyectos/TID/proyecto/titanic.csv", header=TRUE, sep=",")
+titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",")
 
 summary(titanic)
 
@@ -8,19 +8,19 @@ titanic2$Clase=ifelse(titanic2$Clase==1, "Primera",
                       ifelse(titanic2$Clase==2, "Segunda", "Tercera"))
 
 clase=table(titanic2$Clase)
-barplot(clase, ylim=c(0,1000), col=2, main="Pasajeros según clase", xlab="Clase", 
+barplot(clase, ylim=c(0, 1000), col=2, main="Pasajeros según clase", xlab="Clase", 
         ylab="Nº de pasajeros")
 
 sexo=table(titanic2$Sexo)
-barplot(sexo, ylim=c(0,1000), col=3, main="Pasajeros según sexo", xlab="Sexo", 
+barplot(sexo, ylim=c(0, 1000), col=3, main="Pasajeros según sexo", xlab="Sexo", 
         ylab="Nº de pasajeros")
 
 puerto=table(titanic2$PuertoEmbarque)
-barplot(puerto, ylim=c(0,1000), col=4, main="Pasajeros según puerto de embarque", xlab="Puerto",
+barplot(puerto, ylim=c(0, 1000), col=4, main="Pasajeros según puerto de embarque", xlab="Puerto",
         ylab="Nº de pasajeros")
 
 edad=factor(cut(titanic2$Edad, breaks=0+10*(0:7)))
-barplot(table(edad), ylim=c(0,500), col=7, main="Pasajeros según intervalos de edad", 
+barplot(table(edad), ylim=c(0, 500), col=7, main="Pasajeros según intervalos de edad", 
         xlab="Intervalo de edades", ylab="Nº de pasajeros")
 
 plot(density(titanic2$Edad), main="Densidad de edades", ylab="Densidad")
@@ -33,22 +33,22 @@ boxplot(titanic2$Edad~titanic2$PuertoEmbarque, col=4, main="Pasajeros por clase 
         xlab="Puerto de embarque", ylab="Edad")
 
 supClase=table(titanic2$Superviviente, titanic2$Clase)
-barplot(supClase, ylim=c(0,1000), main="Supervivientes/Fallecidos según clase", xlab="Sexo", 
+barplot(supClase, ylim=c(0, 1000), main="Supervivientes/Fallecidos según clase", xlab="Sexo", 
         ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supClase), args.legend = 
           list(x = "topright",bty = "n", inset=c(-0.15, -0.15)))
 
 supSexo=table(titanic2$Superviviente, titanic2$Sexo)
-barplot(supSexo, ylim=c(0,1000), main="Supervivientes/Fallecidos según sexo", xlab="Sexo", 
+barplot(supSexo, ylim=c(0, 1000), main="Supervivientes/Fallecidos según sexo", xlab="Sexo", 
         ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supSexo), args.legend = 
           list(x = "topright",bty = "n", inset=c(-0.15, -0.15)))
 
 supPuerto=table(titanic2$Superviviente, titanic2$PuertoEmbarque)
-barplot(supPuerto, ylim=c(0,1000), main="Supervivientes/Fallecidos según sexo", xlab="Sexo", 
+barplot(supPuerto, ylim=c(0, 1000), main="Supervivientes/Fallecidos según sexo", xlab="Sexo", 
         ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supPuerto), args.legend = 
           list(x = "topright",bty = "n", inset=c(0.6, -0.15)))
 
 supEdad=table(titanic2$Superviviente, edad)
-barplot(supEdad, ylim=c(0,500), main="Supervivientes/Fallecidos según intervalo de edad", 
+barplot(supEdad, ylim=c(0, 500), main="Supervivientes/Fallecidos según intervalo de edad", 
         xlab="Edad", ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supSexo), args.legend = 
           list(x = "topright",bty = "n", inset=c(-0.15, -0.15)))
 
@@ -59,11 +59,11 @@ titanic3$Sexo=as.integer(factor(titanic3$Sexo))
 titanic3$PuertoEmbarque=as.integer(factor(titanic3$PuertoEmbarque))
 pairs(titanic3[, -c(2)], col=titanic3$Superviviente)
 
-factorial=factanal(titanic3[, c(3,4,5,8)], factors=1, scores="regression")
+factorial=factanal(titanic3[, c(3, 4, 5, 8)], factors=1, scores="regression")
 factorial
 
 y1=factorial$scores
 y2=titanic3$Superviviente
-h=data.frame(y1,y2)
+h=data.frame(y1, y2)
 str(h)
-boxplot(h$Factor1 ~ h$y2,col=3)
+boxplot(h$Factor1~h$y2, col=3)
