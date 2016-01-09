@@ -4,21 +4,16 @@ library("cluster")
 
 titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",")
 
-titanic2=titanic[, -c(1, 4)]
+titanic2=titanic[, -c(1, 4, 7, 8)]
 titanic2$Sexo=ifelse(titanic2$Sexo == "Hombre", 0, 1)
 titanic2$Sexo=as.integer(titanic2$Sexo)
 titanic2$PuertoEmbarque=as.integer(factor(titanic2$PuertoEmbarque))
 
 # Distancias numéricas
 numericos=data.frame(titanic2[, -c(1, 3)])
-numericos2=numericos
-for (j in 1:5) {x=numericos2[,j]; v=(x-mean(x))/sqrt(var(x)); numericos2[,j]=v} # Normalizo factores numericos
 muestra=sample(1:dim(numericos)[1], 325) # Muestra para el análisis de bondad
-muestra2=sample(1:dim(numericos2)[1], 325) # Muestra para el análisis de bondad
 distancia1=dist(numericos, method="euclidean")
 distancia4=dist(numericos[muestra,], method="euclidean")
-distancia7=dist(numericos2, method="euclidean")
-distancia10=dist(numericos2[muestra2,], method="euclidean")
 
 # Distancias binarias
 binarios=data.frame(titanic2[, c(1, 3)])
@@ -28,8 +23,6 @@ distancia5=dist(binarios[muestra,], method="binary")
 # Calculo distancias ponderadas
 distancia3=(distancia1+distancia2)/2
 distancia6=(distancia4+distancia5)/2
-distancia9=(distancia7+distancia2)/2
-distancia12=(distancia10+distancia5)/2
 
 
 ### AGRUPACIÓN JERARQUICA POR EL MÉTODO DE WARD
