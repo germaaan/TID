@@ -58,12 +58,3 @@ titanic3$Superviviente=as.factor(ifelse(titanic3$Superviviente==1, "Supervivient
 titanic3$Sexo=as.integer(factor(titanic3$Sexo))
 titanic3$PuertoEmbarque=as.integer(factor(titanic3$PuertoEmbarque))
 pairs(titanic3[, -c(2)], col=titanic3$Superviviente)
-
-factorial=factanal(titanic3[, c(3, 4, 5, 8)], factors=1, scores="regression")
-factorial
-
-y1=factorial$scores
-y2=titanic3$Superviviente
-h=data.frame(y1, y2)
-str(h)
-boxplot(h$Factor1~h$y2, col=3)
