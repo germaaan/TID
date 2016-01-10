@@ -1,5 +1,9 @@
-install.packages("tree")
-library("tree")
+install.packages("rpart")
+install.packages("rattle")
+install.packages("RColorBrewer")
+library("rpart")
+library("rattle")
+library("RColorBrewer")
 
 titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
 
@@ -14,13 +18,16 @@ prueba=titanic2[id==2, ]
 # Definir modelo para la predicción
 modelo=Superviviente~Clase+Edad+HermanosConyuges+PadresHijos+Tarifa
 # Crear árbol
-arbol=tree(modelo, data=entrenamiento)
-table(predict(arbol, type="class"), entrenamiento$Superviviente)
-summary(arbol)
-plot(arbol) ; text(arbol)
+arbol1=rpart(modelo, data=entrenamiento)
+arbol2=rpart(modelo, data=entrenamiento, parms=list(split="information"))
+
+arbol1
+fancyRpartPlot(arbol1)
+arbol2
+fancyRpartPlot(arbol2)
 
 # Test de los resultados
-prediccion=predict(arbol, newdata=prueba, type="class")
+prediccion=predict(arbol1, newdata=prueba, type="class")
 test=table(prediccion, prueba$Superviviente)
 
 diagonal=diag(test)
@@ -57,4 +64,4 @@ recall
 fmeasure
 #F-measure total
 fmeasure_total
-fmeasure_total_tree=fmeasure_total
+fmeasure_total_rpart=fmeasure_total

@@ -1,8 +1,9 @@
-install.packages("tree")
-library("tree")
+install.packages("party")
+library("party")
 
 titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
 
+# Filtrar valores perdidos
 titanic2=titanic
 titanic2$Superviviente=as.factor(ifelse(titanic2$Superviviente==1, "Superviviente", "Fallecido"))
 
@@ -14,10 +15,10 @@ prueba=titanic2[id==2, ]
 # Definir modelo para la predicción
 modelo=Superviviente~Clase+Edad+HermanosConyuges+PadresHijos+Tarifa
 # Crear árbol
-arbol=tree(modelo, data=entrenamiento)
-table(predict(arbol, type="class"), entrenamiento$Superviviente)
-summary(arbol)
-plot(arbol) ; text(arbol)
+arbol=ctree(modelo, data=entrenamiento)
+table(predict(arbol), entrenamiento$Superviviente)
+arbol
+plot(arbol,type="simple")
 
 # Test de los resultados
 prediccion=predict(arbol, newdata=prueba, type="class")
@@ -57,4 +58,4 @@ recall
 fmeasure
 #F-measure total
 fmeasure_total
-fmeasure_total_tree=fmeasure_total
+fmeasure_total_ctree=fmeasure_total
