@@ -4,7 +4,9 @@ library("cluster")
 
 titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
 
-titanic2=titanic[ , c(5:8, 10)]
+muestra=sample(1:dim(titanic)[1], 150)
+
+titanic2=titanic[muestra , c(5:8, 10)]
 titanic2$Sexo=as.integer(ifelse(titanic2$Sexo == "Hombre", 0, 1))
 
 # Distancia numéricos
@@ -23,7 +25,7 @@ distancia_ponderada=(distancia_numericos+distancia_binarios)/2
 ### AGRUPACIÓN JERARQUICA POR EL MÉTODO DE WARD
 ## Supervivientes
 jerarquica=hclust(distancia_ponderada, method="ward.D2")
-plot(jerarquica, main="Dendograma agrupación jerarquica: Supervivientes", labels=ifelse(titanic$Superviviente == 1, "Superviviente", "Fallecido"))
+plot(jerarquica, main="Dendograma agrupación jerarquica: Supervivientes", labels=ifelse(titanic[muestra, ]$Superviviente == 1, "Superviviente", "Fallecido"))
 rect.hclust(jerarquica, k=2)
 
 # Variables para agrupamiento
@@ -33,9 +35,5 @@ agrupacion_jerarquica=cutree(jerarquica, k=2)
 plotcluster(numericos, agrupacion_jerarquica)
 
 # Coeficiente de silueta
-muestra=sample(1:dim(numericos)[1], 325)
-distancia_numericos_muestra=dist(numericos[muestra,])
-distancia_binarios_muestra=dist(binarios[muestra,])
-distancia_ponderada_muestra=(distancia_numericos_muestra+distancia_binarios_muestra)/2
-silueta=silhouette(agrupacion_jerarquica[muestra], distancia_ponderada_muestra)
+silueta=silhouette(agrupacion_jerarquica, distancia_ponderada)
 plot(silueta, col=1:2)

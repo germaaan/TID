@@ -22,18 +22,16 @@ distancia_binarios=dist(binarios, method="binary")
 distancia_ponderada=(distancia_numericos+distancia_binarios)/2
 
 
-### AGRUPACIÓN JERARQUICA POR EL MÉTODO DE WARD
+### AGRUPACIÓN POR K-MEDOIDES
 ## Clases
-jerarquica=hclust(distancia_ponderada, method="ward.D2")
-plot(jerarquica, main="Dendograma agrupación jerarquica: Clases", labels=ifelse(titanic[muestra, ]$Clase==1, "Primera", ifelse(titanic[muestra, ]$Clase==2, "Segunda", "Tercera")))
-rect.hclust(jerarquica, k=3)
+kmedoides=pam(distancia_ponderada, 3)
 
 # Variables para agrupamiento
-agrupacion_jerarquica=cutree(jerarquica, k=3)
+agrupacion_kmedoides=kmedoides$clustering
 
 # Análisis de bondad
-plotcluster(numericos, agrupacion_jerarquica)
+plotcluster(numericos, agrupacion_kmedoides)
 
 # Coeficiente de silueta
-silueta=silhouette(agrupacion_jerarquica, distancia_ponderada)
+silueta=silhouette(agrupacion_kmedoides, distancia_ponderada)
 plot(silueta, col=1:3)

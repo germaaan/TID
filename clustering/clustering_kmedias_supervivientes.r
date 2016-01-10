@@ -4,16 +4,18 @@ library("cluster")
 
 titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
 
-titanic2=titanic[, c(2, 5:9)]
+muestra=sample(1:dim(titanic)[1], 150)
+
+titanic2=titanic[muestra , c(5:8, 10)]
 titanic2$Sexo=as.integer(ifelse(titanic2$Sexo == "Hombre", 0, 1))
 
 # Distancia numéricos
-numericos=data.frame(titanic2[, -c(1, 2)])
+numericos=data.frame(titanic2[, -c(1)])
 for (j in 1:4) {x=numericos[,j] ; v=(x-mean(x))/sqrt(var(x)); numericos[,j]=v} # Normalizar valores
 distancia_numericos=dist(numericos, method="euclidean")
 
 # Distancia binarios
-binarios=data.frame(titanic2[, c(1, 2)])
+binarios=data.frame(titanic2$Sexo)
 distancia_binarios=dist(binarios, method="binary")
 
 # Calculo distancia ponderada
@@ -21,23 +23,15 @@ distancia_ponderada=(distancia_numericos+distancia_binarios)/2
 
 
 ### AGRUPACIÓN POR K-MEDIAS
+## Supervivientes
 kmedias=kmeans(distancia_ponderada, 2)
-kmedias~centers
 
 # Variables para agrupamiento
 agrupacion_kmedias=kmedias$cluster
 
 # Análisis de bondad
-muestra=sample(1:dim(numericos)[1], 325)
-plotcluster(numericos[muestra,], agrupacion_kmedias[muestra])
-plotcluster(binarios[muestra,], agrupacion_kmedias[muestra])
+plotcluster(numericos, agrupacion_kmedias)
 
 # Coeficiente de silueta
-distancia_numericos_muestra=dist(numericos[muestra,])
-distancia_binarios_muestra=dist(binarios[muestra,])
-distancia_ponderada_muestra=(distancia_numericos_muestra+distancia_binarios_muestra)/2
-silueta=silhouette(agrupacion_kmedias[muestra], distancia_ponderada_muestra)
+silueta=silhouette(agrupacion_kmedias, distancia_ponderada)
 plot(silueta, col=1:2)
-
-# Otras medidas de bondad del agrupamiento
-cluster.stats(distancia_ponderada, agrupacion_kmedias)
