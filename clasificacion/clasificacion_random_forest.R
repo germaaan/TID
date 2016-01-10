@@ -1,5 +1,5 @@
-install.packages("party")
-library("party")
+install.packages("randomForest")
+library("randomForest")
 
 titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
 
@@ -14,20 +14,19 @@ prueba=titanic2[id==2, ]
 # Definir modelo para la predicción
 modelo=Superviviente~Clase+Edad+HermanosConyuges+PadresHijos+Tarifa
 # Crear árbol
-arbol=ctree(modelo, data=entrenamiento)
+arbol=randomForest(modelo, data=entrenamiento)
 table(predict(arbol), entrenamiento$Superviviente)
 arbol
-plot(arbol,type="simple")
 
 # Test de los resultados
 prediccion=predict(arbol, newdata=prueba, type="class")
 test=table(prediccion, prueba$Superviviente)
 
 diagonal=diag(test)
-bien_clasificados_ctree=(sum(diagonal)/nrow(prueba))*100
-mal_clasificados_ctree=100-bien_clasificados_ctree
-bien_clasificados_ctree
-mal_clasificados_ctree
+bien_clasificados_random=(sum(diagonal)/nrow(prueba))*100
+mal_clasificados_random=100-bien_clasificados_random
+bien_clasificados_random
+mal_clasificados_random
 
 # Precisión, exhaustividad y valor-F
 m=c(1:nrow(test))
@@ -57,4 +56,4 @@ recall
 fmeasure
 # Valor-F total
 fmeasure_total
-fmeasure_total_ctree=fmeasure_total
+fmeasure_total_random=fmeasure_total

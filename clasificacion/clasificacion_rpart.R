@@ -31,10 +31,10 @@ prediccion=predict(arbol1, newdata=prueba, type="class")
 test=table(prediccion, prueba$Superviviente)
 
 diagonal=diag(test)
-bien_clasificados=(sum(diagonal)/nrow(prueba))*100
-mal_clasificados=100-bien_clasificados
-bien_clasificados
-mal_clasificados
+bien_clasificados_rparty=(sum(diagonal)/nrow(prueba))*100
+mal_clasificados_rparty=100-bien_clasificados_rparty
+bien_clasificados_rparty
+mal_clasificados_rparty
 
 # Precisión, exhaustividad y valor-F
 m=c(1:nrow(test))
@@ -62,6 +62,6 @@ recall
 # Valor-F (F-measure)
 # Media armónica de la precisionisión y la exhaustividad, mide la precisionisión del test
 fmeasure
-#F-measure total
+# Valor-F total
 fmeasure_total
-fmeasure_total_rpart=fmeasure_total
+fmeasure_total_rparty=fmeasure_total

@@ -1,5 +1,7 @@
-install.packages("party")
-library("party")
+install.packages("kknn")
+install.packages("ROCR")
+library("kknn")
+library("ROCR")
 
 titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
 
@@ -13,21 +15,18 @@ prueba=titanic2[id==2, ]
 
 # Definir modelo para la predicción
 modelo=Superviviente~Clase+Edad+HermanosConyuges+PadresHijos+Tarifa
-# Crear árbol
-arbol=ctree(modelo, data=entrenamiento)
-table(predict(arbol), entrenamiento$Superviviente)
-arbol
-plot(arbol,type="simple")
+# Crear clasificacion
+clasificacion=kknn(formula=modelo, entrenamiento, prueba, na.action=na.omit(), k=2)
+summary(clasificacion)
 
 # Test de los resultados
-prediccion=predict(arbol, newdata=prueba, type="class")
-test=table(prediccion, prueba$Superviviente)
-
+test=table(clasificacion$fit, prueba$Superviviente)
 diagonal=diag(test)
-bien_clasificados_ctree=(sum(diagonal)/nrow(prueba))*100
-mal_clasificados_ctree=100-bien_clasificados_ctree
-bien_clasificados_ctree
-mal_clasificados_ctree
+
+bien_clasificados_knn=(sum(diagonal)/nrow(prueba))*100
+mal_clasificados_knn=100-bien_clasificados_knn
+bien_clasificados_knn
+mal_clasificados_knn
 
 # Precisión, exhaustividad y valor-F
 m=c(1:nrow(test))
@@ -57,4 +56,10 @@ recall
 fmeasure
 # Valor-F total
 fmeasure_total
-fmeasure_total_ctree=fmeasure_total
+fmeasure_total_knn=fmeasure_total
+
+# Calculo de las curvas ROC
+m=clasificacion$prob[, 2]
+prediccion=prediction(m, prueba$Superviviente)
+rendimiento=performance(prediccion, "tpr", "fpr")
+plot(rendimiento, main="KNN")

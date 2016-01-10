@@ -1,5 +1,7 @@
-install.packages("party")
-library("party")
+install.packages("e1071")
+install.packages("ROCR")
+library("e1071")
+library("ROCR")
 
 titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
 
@@ -13,21 +15,19 @@ prueba=titanic2[id==2, ]
 
 # Definir modelo para la predicción
 modelo=Superviviente~Clase+Edad+HermanosConyuges+PadresHijos+Tarifa
-# Crear árbol
-arbol=ctree(modelo, data=entrenamiento)
-table(predict(arbol), entrenamiento$Superviviente)
-arbol
-plot(arbol,type="simple")
+# Crear clasificación
+clasificacion=naiveBayes(modelo, data=entrenamiento)
+table(predict(clasificacion, entrenamiento, type="class"), entrenamiento$Superviviente)
 
 # Test de los resultados
-prediccion=predict(arbol, newdata=prueba, type="class")
+prediccion=predict(clasificacion, newdata=prueba, type="class")
 test=table(prediccion, prueba$Superviviente)
 
 diagonal=diag(test)
-bien_clasificados_ctree=(sum(diagonal)/nrow(prueba))*100
-mal_clasificados_ctree=100-bien_clasificados_ctree
-bien_clasificados_ctree
-mal_clasificados_ctree
+bien_clasificados_naive=(sum(diagonal)/nrow(prueba))*100
+mal_clasificados_naive=100-bien_clasificados_naive
+bien_clasificados_naive
+mal_clasificados_naive
 
 # Precisión, exhaustividad y valor-F
 m=c(1:nrow(test))
@@ -57,4 +57,10 @@ recall
 fmeasure
 # Valor-F total
 fmeasure_total
-fmeasure_total_ctree=fmeasure_total
+fmeasure_total_naive=fmeasure_total
+
+# Calculo de las curvas ROC
+m=predict(clasificacion, newdata=prueba, type="prob")
+prediccion=prediction(m[, 2], prueba$Superviviente)
+rendimiento=performance(prediccion, "tpr", "fpr")
+plot(rendimiento, main="Naive Bayes")

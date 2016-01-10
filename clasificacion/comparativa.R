@@ -1,0 +1,10 @@
+v1=c("Precision total", "Valor-F total")
+v2=c(bien_clasificados_ctree, fmeasure_total_ctree)
+v3=c(bien_clasificados_tree, fmeasure_total_tree)
+v4=c(bien_clasificados_rparty, fmeasure_total_rparty)
+v5=c(bien_clasificados_naive, fmeasure_total_naive)
+v6=c(bien_clasificados_knn, fmeasure_total_knn)
+v7=c(bien_clasificados_random, fmeasure_total_random)
+td=data.frame(v1, v2, v3, v4, v5, v6, v7)
+names(td)=c("Medida", "Arbol-Reg", "Arbol-Gini", "Arbol-Rpart", "Naive Bayes", "KNN", "Random Forest")
+td 
