@@ -41,8 +41,9 @@ barplot(supEdad, ylim=c(0, 500), main="Supervivientes/Fallecidos según interval
           list(x="topright", bty="n", inset=c(-0.15, -0.15)))
 
 # Negro = Superviviente, Rojo = Fallecido
-titanic3=titanic[, -c(4)]
+titanic3=titanic[, -c(1, 4, 9)]
 titanic3$Superviviente=as.factor(ifelse(titanic3$Superviviente==1, "Superviviente", "Fallecido"))
+titanic3$Sexo=ifelse(titanic3$Sexo=="Hombre", 0, 1)
 titanic3$PuertoEmbarque=as.integer(factor(titanic3$PuertoEmbarque))
-for (j in 5:8) {x=titanic3[,j] ; v=(x-mean(x))/sqrt(var(x)); titanic3[,j]=v}
-pairs(titanic3[, -c(2)], col=titanic3$Superviviente)
+#for (j in 2:8) {x=titanic3[,j] ; v=(x-mean(x))/sqrt(var(x)); titanic3[,j]=v}
+pairs(titanic3[, -c(1)], col=titanic3$Superviviente)
