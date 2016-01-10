@@ -28,22 +28,21 @@ boxplot(titanic2$Edad~titanic2$Sexo, col=3, main="Pasajeros según sexo respecto
 supClase=table(titanic2$Superviviente, titanic2$Clase)
 barplot(supClase, ylim=c(0, 1000), main="Supervivientes/Fallecidos según clase", xlab="Sexo", 
         ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supClase), args.legend = 
-          list(x = "topright",bty = "n", inset=c(-0.15, -0.15)))
+          list(x="topright", bty="n", inset=c(-0.15, -0.15)))
 
 supSexo=table(titanic2$Superviviente, titanic2$Sexo)
 barplot(supSexo, ylim=c(0, 1000), main="Supervivientes/Fallecidos según sexo", xlab="Sexo", 
         ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supSexo), args.legend = 
-          list(x = "topright",bty = "n", inset=c(-0.15, -0.15)))
+          list(x="topright", bty="n", inset=c(-0.15, -0.15)))
 
 supEdad=table(titanic2$Superviviente, edad)
 barplot(supEdad, ylim=c(0, 500), main="Supervivientes/Fallecidos según intervalo de edad", 
         xlab="Edad", ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supEdad), args.legend = 
-          list(x = "topright",bty = "n", inset=c(-0.15, -0.15)))
+          list(x="topright", bty="n", inset=c(-0.15, -0.15)))
 
 # Negro = Superviviente, Rojo = Fallecido
 titanic3=titanic[, -c(4)]
 titanic3$Superviviente=as.factor(ifelse(titanic3$Superviviente==1, "Superviviente", "Fallecido"))
-titanic3$Sexo=as.integer(factor(titanic3$Sexo))
-titanic3$Tarifa=as.integer(titanic3$Tarifa)
 titanic3$PuertoEmbarque=as.integer(factor(titanic3$PuertoEmbarque))
+for (j in 5:8) {x=titanic3[,j] ; v=(x-mean(x))/sqrt(var(x)); titanic3[,j]=v}
 pairs(titanic3[, -c(2)], col=titanic3$Superviviente)
