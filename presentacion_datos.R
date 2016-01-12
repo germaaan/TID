@@ -1,49 +1,77 @@
-titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
-summary(titanic)
+test=read.csv(file="/home/germaaan/proyectos/TID/test.csv", header=TRUE, sep=",", dec=",")
+summary(test)
 
-titanic2=titanic
-titanic2$Superviviente=ifelse(titanic2$Superviviente==1, "Superviviente", "Fallecido")
-titanic2$Clase=ifelse(titanic2$Clase==1, "Primera", 
-                      ifelse(titanic2$Clase==2, "Segunda", "Tercera"))
+test2=test
+test2$UsoTV=ifelse(test2$UsoTV==1, "Ve TV", "No ve TV")
+test2$UsoRRSS=ifelse(test2$UsoRRSS==1, "Usa RRSS", "No usa RRSS")
 
-clase=table(titanic2$Clase)
-barplot(clase, ylim=c(0, 1000), col=2, main="Pasajeros según clase", xlab="Clase", 
-        ylab="Nº de pasajeros")
+sexo=table(test2$Sexo)
+barplot(sexo, ylim=c(0, 700), col=2, main="Personas según sexo", xlab="Sexo", 
+        ylab="Nº de personas")
 
-sexo=table(titanic2$Sexo)
-barplot(sexo, ylim=c(0, 1000), col=3, main="Pasajeros según sexo", xlab="Sexo", 
-        ylab="Nº de pasajeros")
+estado=table(test2$EstadoCivil)
+barplot(estado, ylim=c(0, 700), col=3, main="Personas según estado civil", xlab="Estado civil", 
+        ylab="Nº de personas")
 
-edad=factor(cut(titanic2$Edad, breaks=0+10*(0:7)))
-barplot(table(edad), ylim=c(0, 500), col=4, main="Pasajeros según intervalos de edad", 
-        xlab="Intervalo de edades", ylab="Nº de pasajeros")
+estudios=table(test2$Estudios)
+barplot(estudios, ylim=c(0, 700), col=4, main="Personas según nivel estudios", xlab="Nivel de estudios", 
+        ylab="Nº de personas")
 
-plot(density(titanic2$Edad), main="Densidad de edades", ylab="Densidad")
+edad=factor(cut(test2$Edad, breaks=0+5*(0:10)))
+barplot(table(edad), ylim=c(0, 500), col=5, main="Personas según intervalos de edad", 
+        xlab="Intervalo de edades", ylab="Nº de personas")
 
-boxplot(titanic2$Edad~titanic2$Clase, col=2, main="Pasajeros según clase respecto a la edad",
-        xlab="Clase", ylab="Edad")
-boxplot(titanic2$Edad~titanic2$Sexo, col=3, main="Pasajeros según sexo respecto a la edad",
+plot(density(test2$Edad), main="Densidad de edades", ylab="Densidad")
+
+boxplot(test2$Edad~test2$Sexo, col=3, main="Personas según sexo respecto a la edad",
         xlab="Sexo", ylab="Edad")
+boxplot(test2$Edad~test2$EstadoCivil, col=3, main="Personas según estado civil respecto a la edad",
+        xlab="EstadoCivil", ylab="Edad")
+boxplot(test2$Edad~test2$Estudios, col=4, main="Personas según nivel de estudios respecto a la edad",
+        xlab="Estudios", ylab="Edad")
 
-supClase=table(titanic2$Superviviente, titanic2$Clase)
-barplot(supClase, ylim=c(0, 1000), main="Supervivientes/Fallecidos según clase", xlab="Sexo", 
-        ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supClase), args.legend = 
+tvSexo=table(test2$UsoTV, test2$Sexo)
+barplot(tvSexo, ylim=c(0, 900), main="Uso TV según sexo", xlab="Sexo", 
+        ylab="Nº de personas", col=c(10, 11), legend=rownames(tvSexo), args.legend = 
           list(x="topright", bty="n", inset=c(-0.15, -0.15)))
 
-supSexo=table(titanic2$Superviviente, titanic2$Sexo)
-barplot(supSexo, ylim=c(0, 1000), main="Supervivientes/Fallecidos según sexo", xlab="Sexo", 
-        ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supSexo), args.legend = 
+tvEstado=table(test2$UsoTV, test2$EstadoCivil)
+barplot(tvEstado, ylim=c(0, 900), main="Uso TV según estado civil", xlab="Estado civil", 
+        ylab="Nº de personas", col=c(10, 11), legend=rownames(tvEstado), args.legend = 
           list(x="topright", bty="n", inset=c(-0.15, -0.15)))
 
-supEdad=table(titanic2$Superviviente, edad)
-barplot(supEdad, ylim=c(0, 500), main="Supervivientes/Fallecidos según intervalo de edad", 
-        xlab="Edad", ylab="Nº de pasajeros", col=c(10, 11), legend=rownames(supEdad), args.legend = 
+tvEstudios=table(test2$UsoTV, test2$Estudios)
+barplot(tvEstudios, ylim=c(0, 900), main="Uso TV según nivel de estudios", xlab="Nivel de estudios", 
+        ylab="Nº de personas", col=c(10, 11), legend=rownames(tvEstudios), args.legend = 
           list(x="topright", bty="n", inset=c(-0.15, -0.15)))
 
-# Negro = Superviviente, Rojo = Fallecido
-titanic3=titanic[, -c(1, 4, 9)]
-titanic3$Superviviente=as.factor(ifelse(titanic3$Superviviente==1, "Superviviente", "Fallecido"))
-titanic3$Sexo=ifelse(titanic3$Sexo=="Hombre", 0, 1)
-titanic3$PuertoEmbarque=as.integer(factor(titanic3$PuertoEmbarque))
-#for (j in 2:8) {x=titanic3[,j] ; v=(x-mean(x))/sqrt(var(x)); titanic3[,j]=v}
-pairs(titanic3[, -c(1)], col=titanic3$Superviviente)
+rrssSexo=table(test2$UsoRRSS, test2$Sexo)
+barplot(rrssSexo, ylim=c(0, 900), main="Uso redes sociales según sexo", xlab="Sexo", 
+        ylab="Nº de personas", col=c(10, 11), legend=rownames(rrssSexo), args.legend = 
+          list(x="topright", bty="n", inset=c(-0.15, -0.15)))
+
+rrssEstado=table(test2$UsoRRSS, test2$EstadoCivil)
+barplot(rrssEstado, ylim=c(0, 900), main="Uso redes sociales según estado civil", xlab="Estado civil", 
+        ylab="Nº de personas", col=c(10, 11), legend=rownames(rrssEstado), args.legend = 
+          list(x="topright", bty="n", inset=c(-0.15, -0.15)))
+
+rrssEstudios=table(test2$UsoRRSS, test2$Estudios)
+barplot(rrssEstudios, ylim=c(0, 900), main="Uso redes sociales según nivel de estudios", xlab="Nivel de estudios", 
+        ylab="Nº de personas", col=c(10, 11), legend=rownames(rrssEstudios), args.legend = 
+          list(x="topright", bty="n", inset=c(-0.15, -0.15)))
+
+# Negro = Ve TV, Rojo = No ve TV
+test3=test
+test3$UsoTV=as.factor(ifelse(test2$UsoTV==1, "Ve TV", "No ve TV"))
+test3$Sexo=as.integer(factor(test3$Sexo))
+test3$EstadoCivil=as.integer(factor(test3$EstadoCivil))
+test3$Estudios=as.integer(factor(test3$Estudios))
+pairs(test3[, -c(1, 9)], col=1:2)
+
+# Negro = Usa RRSS, Rojo = No usa RRSS
+test4=test
+test4$UsoTV=as.factor(ifelse(test2$UsoTV==1, "Usa RRSS", "No usa RRSS"))
+test4$Sexo=as.integer(factor(test3$Sexo))
+test4$EstadoCivil=as.integer(factor(test3$EstadoCivil))
+test4$Estudios=as.integer(factor(test3$Estudios))
+pairs(test3[, -c(1, 10)], col=1:2)
