@@ -23,10 +23,13 @@ barplot(table(edad), ylim=c(0, 500), col=5, main="Personas según intervalos de 
 
 plot(density(test2$Edad), main="Densidad de edades", ylab="Densidad")
 
+tapply(test2$Edad, test2$Sexo, "summary")
 boxplot(test2$Edad~test2$Sexo, col=3, main="Personas según sexo respecto a la edad",
         xlab="Sexo", ylab="Edad")
+tapply(test2$Edad, test2$EstadoCivil, "summary")
 boxplot(test2$Edad~test2$EstadoCivil, col=3, main="Personas según estado civil respecto a la edad",
         xlab="EstadoCivil", ylab="Edad")
+tapply(test2$Edad, test2$Estudios, "summary")
 boxplot(test2$Edad~test2$Estudios, col=4, main="Personas según nivel de estudios respecto a la edad",
         xlab="Estudios", ylab="Edad")
 
@@ -70,8 +73,35 @@ pairs(test3[, -c(1, 9)], col=1:2)
 
 # Negro = Usa RRSS, Rojo = No usa RRSS
 test4=test
-test4$UsoTV=as.factor(ifelse(test2$UsoTV==1, "Usa RRSS", "No usa RRSS"))
+test4$UsoRRSS=as.factor(ifelse(test2$UsoRRSS==1, "Usa RRSS", "No usa RRSS"))
 test4$Sexo=as.integer(factor(test3$Sexo))
 test4$EstadoCivil=as.integer(factor(test3$EstadoCivil))
 test4$Estudios=as.integer(factor(test3$Estudios))
 pairs(test3[, -c(1, 10)], col=1:2)
+
+test5=test[, c(2, 6, 7, 8)]
+factorial=factanal(test5, factors=1, scores="regression")
+factorial
+
+# Análisis factorial
+y1=factorial$scores
+y2=test$UsoTV
+y3=test$UsoRRSS
+h1=data.frame(y1, y2)
+h2=data.frame(y1, y3)
+str(h1)
+boxplot(h1$Factor1 ~ h1$y2, main="Análisis factorial: uso de televisión", col=2)
+str(h2)
+boxplot(h2$Factor1 ~ h2$y3, main="Análisis factorial: uso de redes sociales",  col=3)
+
+# Análisis de componentes principales
+test6=test[, c(2, 6, 7, 8)]
+componentes=prcomp(test6, retX=TRUE)
+componentes
+str(componentes)
+componentes$x
+
+componentes=prcomp(test6, retX=TRUE, tol=0.15)
+componentes
+str(componentes)
+componentes$x
