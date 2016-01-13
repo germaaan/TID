@@ -1,26 +1,26 @@
 install.packages("randomForest")
 library("randomForest")
 
-titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
+test=read.csv(file="/home/germaaan/proyectos/TID/test.csv", header=TRUE, sep=",", dec=",")
 
-titanic2=titanic
-titanic2$Superviviente=as.factor(ifelse(titanic2$Superviviente==1, "Superviviente", "Fallecido"))
+prueba2=prueba
+test2$UsoTV=as.factor(ifelse(test2$UsoTV==0, "No usa TV", "Usa TV"))
 
 # Crear conjuntos aleatorios de entrenamiento y prueba (70% / 30%)
-id=sample(2, nrow(titanic), replace=TRUE, prob=c(0.7, 0.3))
-entrenamiento=titanic2[id==1, ]
-prueba=titanic2[id==2, ]
+id=sample(2, nrow(prueba), replace=TRUE, prob=c(0.7, 0.3))
+entrenamiento=prueba2[id==1, ]
+prueba=prueba2[id==2, ]
 
 # Definir modelo para la predicción
-modelo=Superviviente~Clase+Edad+HermanosConyuges+PadresHijos+Tarifa
+modelo=UsoTV~.
 # Crear árbol
 arbol=randomForest(modelo, data=entrenamiento)
-table(predict(arbol), entrenamiento$Superviviente)
+table(predict(arbol), test2$UsoTV)
 arbol
 
 # Test de los resultados
 prediccion=predict(arbol, newdata=prueba, type="class")
-test=table(prediccion, prueba$Superviviente)
+test=table(prediccion, prueba$UsoTV)
 
 diagonal=diag(test)
 bien_clasificados_random=(sum(diagonal)/nrow(prueba))*100
@@ -57,3 +57,4 @@ fmeasure
 # Valor-F total
 fmeasure_total
 fmeasure_total_random=fmeasure_total
+

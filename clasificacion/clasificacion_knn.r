@@ -3,24 +3,25 @@ install.packages("ROCR")
 library("kknn")
 library("ROCR")
 
-titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
+test=read.csv(file="/home/germaaan/proyectos/TID/test.csv", header=TRUE, sep=",", dec=",")
 
-titanic2=titanic
-titanic2$Superviviente=as.factor(ifelse(titanic2$Superviviente==1, "Superviviente", "Fallecido"))
+test2=test[, -c(1)]
+test2$UsoTV=as.factor(ifelse(test2$UsoTV==0, "No usa TV", "Usa TV"))
 
 # Crear conjuntos aleatorios de entrenamiento y prueba (70% / 30%)
-id=sample(2, nrow(titanic), replace=TRUE, prob=c(0.7, 0.3))
-entrenamiento=titanic2[id==1, ]
-prueba=titanic2[id==2, ]
+id=sample(2, nrow(test), replace=TRUE, prob=c(0.7, 0.3))
+entrenamiento=test2[id==1, ]
+prueba=test2[id==2, ]
 
 # Definir modelo para la predicción
-modelo=Superviviente~Clase+Edad+HermanosConyuges+PadresHijos+Tarifa
+modelo=UsoTV~.
 # Crear clasificacion
 clasificacion=kknn(formula=modelo, entrenamiento, prueba, na.action=na.omit(), k=2)
 summary(clasificacion)
 
 # Test de los resultados
-test=table(clasificacion$fit, prueba$Superviviente)
+fit=fitted(clasificacion)
+test=table(fit, prueba$UsoTV)
 diagonal=diag(test)
 
 bien_clasificados_knn=(sum(diagonal)/nrow(prueba))*100
@@ -60,6 +61,6 @@ fmeasure_total_knn=fmeasure_total
 
 # Calculo de las curvas ROC
 m=clasificacion$prob[, 2]
-prediccion=prediction(m, prueba$Superviviente)
+prediccion=prediction(m, prueba$UsoTV)
 rendimiento=performance(prediccion, "tpr", "fpr")
 plot(rendimiento, main="KNN")

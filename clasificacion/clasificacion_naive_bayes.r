@@ -3,25 +3,25 @@ install.packages("ROCR")
 library("e1071")
 library("ROCR")
 
-titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
+test=read.csv(file="/home/germaaan/proyectos/TID/test.csv", header=TRUE, sep=",", dec=",")
 
-titanic2=titanic
-titanic2$Superviviente=as.factor(ifelse(titanic2$Superviviente==1, "Superviviente", "Fallecido"))
+test2=test
+test2$UsoTV=as.factor(ifelse(test2$UsoTV==0, "No usa TV", "Usa TV"))
 
 # Crear conjuntos aleatorios de entrenamiento y prueba (70% / 30%)
-id=sample(2, nrow(titanic), replace=TRUE, prob=c(0.7, 0.3))
-entrenamiento=titanic2[id==1, ]
-prueba=titanic2[id==2, ]
+id=sample(2, nrow(test), replace=TRUE, prob=c(0.7, 0.3))
+entrenamiento=test2[id==1, ]
+prueba=test2[id==2, ]
 
 # Definir modelo para la predicción
-modelo=Superviviente~Clase+Edad+HermanosConyuges+PadresHijos+Tarifa
+modelo=UsoTV~.
 # Crear clasificación
 clasificacion=naiveBayes(modelo, data=entrenamiento)
-table(predict(clasificacion, entrenamiento, type="class"), entrenamiento$Superviviente)
+table(predict(clasificacion, entrenamiento, type="class"), entrenamiento$UsoTV)
 
 # Test de los resultados
 prediccion=predict(clasificacion, newdata=prueba, type="class")
-test=table(prediccion, prueba$Superviviente)
+test=table(prediccion, prueba$UsoTV)
 
 diagonal=diag(test)
 bien_clasificados_naive=(sum(diagonal)/nrow(prueba))*100
@@ -58,9 +58,3 @@ fmeasure
 # Valor-F total
 fmeasure_total
 fmeasure_total_naive=fmeasure_total
-
-# Calculo de las curvas ROC
-m=predict(clasificacion, newdata=prueba, type="prob")
-prediccion=prediction(m[, 2], prueba$Superviviente)
-rendimiento=performance(prediccion, "tpr", "fpr")
-plot(rendimiento, main="Naive Bayes")
