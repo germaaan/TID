@@ -1,5 +1,7 @@
-install.packages("party")
-library("party")
+install.packages("e1071")
+install.packages("ROCR")
+library("e1071")
+library("ROCR")
 
 test=read.csv(file="/home/germaaan/proyectos/TID/test.csv", header=TRUE, sep=",", dec=",")
 
@@ -12,21 +14,21 @@ id=sample(2, nrow(test), replace=TRUE, prob=c(0.7, 0.3))
 entrenamiento=test2[id==1, ]
 prueba=test2[id==2, ]
 
-# Definir modelo para la predicción de uso de TV
+# Definir modelo para la predicción
 modelo_TV=UsoTV~.
-# Crear árbol
-arbol_TV=ctree(modelo_TV, data=entrenamiento)
-plot(arbol_TV)
+# Crear clasificación
+clasificacion_TV=naiveBayes(modelo_TV, data=entrenamiento)
+table(predict(clasificacion_TV, entrenamiento, type="class"), entrenamiento$UsoTV)
 
 # Test de los resultados
-prediccion_TV=predict(arbol_TV, newdata=prueba, type="response")
+prediccion_TV=predict(clasificacion_TV, newdata=prueba, type="class")
 test_TV=table(prediccion_TV, prueba$UsoTV)
 
 diagonal_TV=diag(test_TV)
-bien_clasificados_ctree_TV=(sum(diagonal_TV)/nrow(prueba))*100
-mal_clasificados_ctree_TV=100-bien_clasificados_ctree_TV
-bien_clasificados_ctree_TV
-mal_clasificados_ctree_TV
+bien_clasificados_naive_TV=(sum(diagonal_TV)/nrow(prueba))*100
+mal_clasificados_naive_TV=100-bien_clasificados_naive_TV
+bien_clasificados_naive_TV
+mal_clasificados_naive_TV
 
 # Precisión, exhaustividad y valor-F
 m_TV=c(1:nrow(test_TV))
@@ -56,24 +58,24 @@ recall_TV
 fmeasure_TV
 # Valor-F total
 fmeasure_total_TV
-fmeasure_total_ctree_TV=fmeasure_total_TV
+fmeasure_total_naive_TV=fmeasure_total_TV
 
 
-# Definir modelo para la predicción de uso de RRSS
+# Definir modelo para la predicción
 modelo_RRSS=UsoRRSS~.
-# Crear árbol
-arbol_RRSS=ctree(modelo_RRSS, data=entrenamiento)
-plot(arbol_RRSS)
+# Crear clasificación
+clasificacion_RRSS=naiveBayes(modelo_RRSS, data=entrenamiento)
+table(predict(clasificacion_RRSS, entrenamiento, type="class"), entrenamiento$UsoRRSS)
 
 # Test de los resultados
-prediccion_RRSS=predict(arbol_RRSS, newdata=prueba, type="response")
+prediccion_RRSS=predict(clasificacion_RRSS, newdata=prueba, type="class")
 test_RRSS=table(prediccion_RRSS, prueba$UsoRRSS)
 
 diagonal_RRSS=diag(test_RRSS)
-bien_clasificados_ctree_RRSS=(sum(diagonal_RRSS)/nrow(prueba))*100
-mal_clasificados_ctree_RRSS=100-bien_clasificados_ctree_RRSS
-bien_clasificados_ctree_RRSS
-mal_clasificados_ctree_RRSS
+bien_clasificados_naive_RRSS=(sum(diagonal_RRSS)/nrow(prueba))*100
+mal_clasificados_naive_RRSS=100-bien_clasificados_naive_RRSS
+bien_clasificados_naive_RRSS
+mal_clasificados_naive_RRSS
 
 # Precisión, exhaustividad y valor-F
 m_RRSS=c(1:nrow(test_RRSS))
@@ -103,4 +105,5 @@ recall_RRSS
 fmeasure_RRSS
 # Valor-F total
 fmeasure_total_RRSS
-fmeasure_total_ctree_RRSS=fmeasure_total_RRSS
+fmeasure_total_naive_RRSS=fmeasure_total_RRSS
+
