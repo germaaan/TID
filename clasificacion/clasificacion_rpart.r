@@ -5,18 +5,19 @@ library("rpart")
 library("rattle")
 library("RColorBrewer")
 
-titanic=read.csv(file="/home/germaaan/proyectos/TID/titanic.csv", header=TRUE, sep=",", dec=",")
+test=read.csv(file="/home/germaaan/proyectos/TID/test.csv", header=TRUE, sep=",", dec=",")
 
-titanic2=titanic
-titanic2$Superviviente=as.factor(ifelse(titanic2$Superviviente==1, "Superviviente", "Fallecido"))
+test2=test[, -c(1)]
+test2$UsoTV=as.factor(ifelse(test2$UsoTV==1, "Usa TV", "No usa TV"))
+test2$UsoRRSS=as.factor(ifelse(test2$UsoRRSS==1, "Usa RRSS", "No usa RRSS"))
 
 # Crear conjuntos aleatorios de entrenamiento y prueba (70% / 30%)
-id=sample(2, nrow(titanic), replace=TRUE, prob=c(0.7, 0.3))
-entrenamiento=titanic2[id==1, ]
-prueba=titanic2[id==2, ]
+id=sample(2, nrow(test), replace=TRUE, prob=c(0.7, 0.3))
+entrenamiento=test2[id==1, ]
+prueba=test2[id==2, ]
 
 # Definir modelo para la predicción
-modelo=Superviviente~Clase+Edad+HermanosConyuges+PadresHijos+Tarifa
+modelo=UsoTV~.
 # Crear árbol
 arbol1=rpart(modelo, data=entrenamiento)
 arbol2=rpart(modelo, data=entrenamiento, parms=list(split="information"))
@@ -26,15 +27,16 @@ fancyRpartPlot(arbol1)
 arbol2
 fancyRpartPlot(arbol2)
 
-# Test de los resultados
-prediccion=predict(arbol1, newdata=prueba, type="class")
-test=table(prediccion, prueba$Superviviente)
+# Test de los resultados árbol podado
+prediccion=predict(arbol2, newdata=prueba, type="class")
+test=table(prediccion, prueba$UsoTV)
 
 diagonal=diag(test)
-bien_clasificados_rparty=(sum(diagonal)/nrow(prueba))*100
-mal_clasificados_rparty=100-bien_clasificados_rparty
-bien_clasificados_rparty
-mal_clasificados_rparty
+bien_clasificados_tree=(sum(diagonal)/nrow(prueba))*100
+mal_clasificados_tree=100-bien_clasificados_tree
+bien_clasificados_tree
+mal_clasificados_tree
+
 
 # Precisión, exhaustividad y valor-F
 m=c(1:nrow(test))
@@ -64,4 +66,4 @@ recall
 fmeasure
 # Valor-F total
 fmeasure_total
-fmeasure_total_rparty=fmeasure_total
+fmeasure_total_tree=fmeasure_total
