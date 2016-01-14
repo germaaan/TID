@@ -131,7 +131,12 @@
 
         <section>
           <h3>Análisis factorial</h3>
-          <p>
+          <p style="line-height: 43%">
+            <font size="4">
+              La alta singularidad en las variables indica que las variables tienen comportamientos inesperados.
+            </font>
+          </p>
+          <p style="line-height: 43%">
             <font size="4">
               Chi-cuadrado y p-valor indican como de bien se ajusta el modelo a los datos, están poniendo a prueba la hipótesis de que el modelo se ajusta a los datos a la perfección; dado un p-valor tan pequeño, rechazamos la hipótesis.
             </font>
@@ -150,19 +155,22 @@
         </section>
         <section>
           <h3>Procedimiento</h2>
-          <ul>
-            <li>Muestra de 150 datos</li>
-            <li>Transformación de variables:</li>
             <ul>
-              <li>Las variables binarias no se transforman</li>
-              <li>Las variables categóricas se convierten en binarias</li>
-              <li>Los valores de las variables cuantitativas serán normalizados (media aritmética/desviación estándar)</li>
+              <li>Muestra de 150 datos</li>
+              <li>Transformación de variables:</li>
+              <ul>
+                <li>Las variables binarias no se transforman</li>
+                <li>Las variables categóricas se convierten en binarias</li>
+                <li>Los valores de las variables cuantitativas serán normalizados (media aritmética/desviación estándar)</li>
+              </ul>
+              <li>Calcular distancia ponderada de distancia en las variables numéricos y distancia en las variables binarias</li>
             </ul>
-            <li>Calcular distancia ponderada de distancia en las variables numéricos y distancia en las variables binarias</li>
-          </ul>
         </section>
         <section>
           <h3>Agrupación jerárquica</h2>
+            <p>
+              Cada dato comienza en su propio grupo y se va ascendiendo
+            </p>
         </section>
         <section>
           <img alt="imagen" src="images/20.png" width="1000" height="680" />
@@ -184,6 +192,9 @@
         </section>
         <section>
           <h3>K-medias</h2>
+            <p>
+              Definimos el número de grupos y de forma iterativa los datos se van agrupando en función de su cercanía a la media del grupo.
+            </p>
         </section>
         <section>
           <img alt="imagen" src="images/26.png" width="1000" height="680" />
@@ -198,7 +209,10 @@
           <img alt="imagen" src="images/29.png" width="1000" height="680" />
         </section>
         <section>
-          <h3>K-meoides</h2>
+          <h3>K-medoides</h2>
+            <p>
+              Definimos el número de grupos y de forma iterativa los datos se van agrupando en función de su cercanía del medoide del grupo.
+            </p>
         </section>
         <section>
           <img alt="imagen" src="images/30.png" width="1000" height="680" />
