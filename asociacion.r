@@ -35,12 +35,7 @@ sale2=subset(sale3, subset=rhs %in% c("UsoTV=Usa TV", "UsoTV=No usa TV") & confi
 salida2=inspect(sale2, ruleSep = "---->", itemSep = " + ", setStart = "", setEnd ="", linebreak=TRUE)
 
 # Visualizacion de reglas
-plot(sale1, method="scatterplot", measure=c("support", "confidence"))
-plot(sale1, shading="order", control=list(main = "Two-key plot", col=rainbow(5)))
-plot(sale2, method="matrix", measure="confidence", control=list(main="Matriz", col=rainbow(8)))
-plot(sale2, method="matrix3d", shading="order", control=list(main="Tridimensional"))
 plot(sale1, method="grouped", measure="confidence", control=list(main="Cluster", k=10, col=rainbow(8)))
-plot(sale2[1:10], method="graph", measure="confidence", control=list(main="Grafo"))
 
 
 # Restriccion de reglas, solo las que predicen clases y con confianza mayor que 0.9
@@ -48,9 +43,4 @@ sale2=subset(sale3, subset=rhs %in% c("UsoRRSS=Usa RRSS", "UsoRRSS=No usa RRSS")
 salida2=inspect(sale2, ruleSep = "---->", itemSep = " + ", setStart = "", setEnd ="", linebreak=TRUE)
 
 # Visualizacion de reglas
-plot(sale1, method="scatterplot", measure=c("support", "confidence"))
-plot(sale1, shading="order", control=list(main = "Two-key plot", col=rainbow(5)))
-plot(sale2, method="matrix", measure="confidence", control=list(main="Matriz", col=rainbow(8)))
-plot(sale2, method="matrix3d", shading="order", control=list(main="Tridimensional"))
 plot(sale1, method="grouped", measure="confidence", control=list(main="Cluster", k=10, col=rainbow(8)))
-plot(sale2[1:10], method="graph", measure="confidence", control=list(main="Grafo"))

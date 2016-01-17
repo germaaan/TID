@@ -38,7 +38,7 @@ distancia_ponderada_rrss=(distancia_numericos+distancia_binarios_rrss)/2
 ### AGRUPACIÓN JERARQUICA POR EL MÉTODO DE WARD
 ## Uso de televisión
 jerarquica_tv=hclust(distancia_ponderada_tv, method="ward.D2")
-plot(jerarquica_tv, main="Dendograma agrupación jerarquica: Uso televisión", labels=ifelse(test[muestra, ]$UsoTV == 1, "Usa TV", "No usa TV"))
+plot(jerarquica_tv, main="Dendograma agrupación jerarquica: Uso televisión", labels=ifelse(test[muestra, ]$UsoTV == 1, "TV", "No TV"))
 rect.hclust(jerarquica_tv, k=2)
 
 # Variables para agrupamiento
@@ -55,7 +55,7 @@ plot(silueta_jerarquica_tv, col=1:2)
 
 ## Uso de redes sociales
 jerarquica_rrss=hclust(distancia_ponderada_rrss, method="ward.D2")
-plot(jerarquica_rrss, main="Dendograma agrupación jerarquica: Uso redes sociales", labels=ifelse(test[muestra, ]$UsoRRSS == 1, "Usa RRSS", "No usa RRSS"))
+plot(jerarquica_rrss, main="Dendograma agrupación jerarquica: Uso redes sociales", labels=ifelse(test[muestra, ]$UsoRRSS == 1, "RS", "No RS"))
 rect.hclust(jerarquica_rrss, k=2)
 
 # Variables para agrupamiento
@@ -136,15 +136,3 @@ plotcluster(binarios_rrss, agrupacion_kmedoides_rrss)
 # Coeficiente de silueta
 silueta_kmedoidesrrss=silhouette(agrupacion_kmedoides_rrss, distancia_ponderada_rrss)
 plot(silueta_kmedoidesrrss, col=1:2)
-
-
-
-
-cluster.stats(distancia_ponderada_tv, agrupacion_jerarquica_tv)
-cluster.stats(distancia_ponderada_rrss, agrupacion_jerarquica_rrss)
-
-cluster.stats(distancia_ponderada_tv, agrupacion_kmedias_tv)
-cluster.stats(distancia_ponderada_rrss, agrupacion_kmedias_rrss)
-
-cluster.stats(distancia_ponderada_tv, agrupacion_kmedoides_tv)
-cluster.stats(distancia_ponderada_rrss, agrupacion_kmedoides_rrss)
